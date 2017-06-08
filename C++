@@ -1,0 +1,44 @@
+class Solution {
+public:
+    bool isRectangleCover(vector<vector<int>>& rectangles) {
+        if(rectangles.size()==0||rectangles[0].size()==0)   return false;
+        
+        int x1=INT_MAX;
+        int y1=INT_MAX;
+        int x2=INT_MIN;
+        int y2=INT_MIN;
+        
+        int area=0;
+        set<string> set;
+        
+        for(vector<int> rect:rectangles){
+            x1=min(x1, rect[0]);
+            y1=min(y1, rect[1]);
+            x2=max(x2, rect[2]);
+            y2=max(y2, rect[3]);
+            
+            area+=(rect[2]-rect[0])*(rect[3]-rect[1]);
+            
+            string p1=to_string(rect[0])+" "+to_string(rect[1]);
+            string p2=to_string(rect[0])+" "+to_string(rect[3]);
+            string p3=to_string(rect[2])+" "+to_string(rect[3]);
+            string p4=to_string(rect[2])+" "+to_string(rect[1]);
+            
+            if(set.find(p1)!=set.end()) set.erase(p1);
+            else set.insert(p1);
+            
+            if(set.find(p2)!=set.end()) set.erase(p2);
+            else set.insert(p2);
+        
+            if(set.find(p3)!=set.end()) set.erase(p3);
+            else set.insert(p3);
+            
+            if(set.find(p4)!=set.end()) set.erase(p4);
+            else set.insert(p4);
+        }
+        if(set.find(to_string(x1)+" "+to_string(y1))==set.end()||set.find(to_string(x1)+" "+to_string(y2))==set.end()||
+        set.find(to_string(x2)+" "+to_string(y2))==set.end()||set.find(to_string(x2)+" "+to_string(y1))==set.end()||set.size()!=4)    return false;
+        
+        return area==(y2-y1)*(x2-x1);
+    }
+};
